@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ankita Halder | Technical Content Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        jpm: {
+                            blue: '#0f4c81', /* Classic Deep Blue */
+                            dark: '#1e1e1e',
+                            gold: '#d4af37',
+                            light: '#f4f4f4',
+                            slate: '#334155'
+                        },
+                        darkbg: '#0a0f1c',
+                        cardbg: '#111827'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Source Sans 3"', 'sans-serif'],
+                    },
+                    animation: {
+                        'ticker': 'ticker 30s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-up': 'fadeUp 0.8s ease-out forwards',
+                        'draw': 'draw 2s ease-out forwards',
+                    },
+                    keyframes: {
+                        ticker: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        draw: {
+                            '0%': { strokeDashoffset: '1000' },
+                            '100%': { strokeDashoffset: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, .brand-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .dark .glass-nav {
+            background: rgba(10, 15, 28, 0.95);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Stock Ticker Animation */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-content {
+            display: inline-block;
+            animation: ticker 40s linear infinite;
+        }
+        
+        /* Intro Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #0a0f1c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+        
+        /* Chart Lines SVG Animation */
+        .chart-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 3s ease-out forwards 0.5s;
+        }
+
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #d4af37;
+            z-index: 10000;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        /* Hide Scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1e1e1e; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-jpm-light text-slate-800 dark:bg-darkbg dark:text-gray-200 transition-colors duration-300">
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Intro Loading Screen -->
+    <div id="loader">
+        <div class="text-center relative">
+            <svg class="w-32 h-32 mx-auto mb-4" viewBox="0 0 100 100" fill="none" stroke="#d4af37" stroke-width="2">
+                <path class="chart-line" d="M10,90 L30,70 L50,80 L70,40 L90,20" />
+                <circle cx="90" cy="20" r="3" fill="#d4af37" class="animate-ping" />
+            </svg>
+            <h1 class="text-white text-2xl tracking-widest uppercase font-light animate-pulse">Initializing Portfolio</h1>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-tighter hover:text-jpm-blue dark:hover:text-jpm-gold transition-colors">
+                AH<span class="text-jpm-gold">.</span>
+            </a>
+            
+            <div class="hidden md:flex space-x-8 items-center text-sm font-semibold tracking-wide uppercase">
+                <a href="#about" class="hover:text-jpm-blue dark:hover:text-jpm-gold transition-colors">Strategy</a>
+                <a href="#experience" class="hover:text-jpm-blue dark:hover:text-jpm-gold transition-colors">Track Record</a>
+                <a href="#skills" class="hover:text-jpm-blue dark:hover:text-jpm-gold transition-colors">Assets</a>
+                <a href="#contact" class="px-5 py-2 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-jpm-blue hover:text-white dark:hover:bg-jpm-gold dark:hover:text-black transition-all">Contact</a>
+                
+                <!-- Dark Mode Toggle -->
+                <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-2xl" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden absolute w-full bg-white dark:bg-darkbg border-b border-gray-200 dark:border-gray-800">
+            <div class="flex flex-col px-6 py-4 space-y-4">
+                <a href="#about" class="block py-2">Strategy</a>
+                <a href="#experience" class="block py-2">Track Record</a>
+                <a href="#skills" class="block py-2">Assets</a>
+                <a href="#contact" class="block py-2">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Parallax Background Elements -->
+        <div class="absolute inset-0 z-0 opacity-10 dark:opacity-20 pointer-events-none">
+            <svg class="absolute top-20 right-0 w-2/3 h-2/3 text-jpm-blue dark:text-blue-500 transform translate-x-1/4" viewBox="0 0 200 200" fill="currentColor">
+                <path d="M45,-75C58,-68,68,-55,75,-41C82,-27,86,-11,83,4C80,19,70,33,60,46C50,59,40,71,27,76C14,81,1,80,-13,77C-27,74,-42,69,-54,58C-66,47,-75,30,-78,12C-81,-6,-78,-26,-69,-43C-60,-60,-48,-74,-34,-80C-20,-86,-3,-83,12,-79" transform="translate(100 100)" />
+            </svg>
+            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-white dark:from-darkbg to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <div class="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-jpm-blue dark:text-blue-300 rounded text-xs font-bold tracking-widest uppercase mb-2 animate-fade-up">
+                    Technical Content Designer
+                </div>
+                <h1 class="text-5xl md:text-7xl font-serif font-bold leading-tight text-slate-900 dark:text-white animate-fade-up" style="animation-delay: 0.1s;">
+                    Simplifying Complexity.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-jpm-blue to-blue-400 dark:from-jpm-gold dark:to-yellow-200">
+                        Designing Trust.
+                    </span>
+                </h1>
+                <p class="text-lg text-slate-600 dark:text-slate-300 max-w-lg leading-relaxed animate-fade-up" style="animation-delay: 0.2s;">
+                    I bridge the gap between complex financial systems and intuitive user experiences. Specialized in Content Strategy, UX Writing, and Technical Documentation for enterprise ecosystems.
+                </p>
+                <div class="flex gap-4 pt-4 animate-fade-up" style="animation-delay: 0.3s;">
+                    <a href="#experience" class="px-8 py-3 bg-jpm-blue text-white rounded shadow-lg hover:bg-blue-800 transition transform hover:-translate-y-1">
+                        View Career Portfolio
+                    </a>
+                    <a href="#contact" class="px-8 py-3 border border-slate-300 dark:border-slate-600 rounded hover:border-jpm-blue dark:hover:border-jpm-gold hover:text-jpm-blue dark:hover:text-jpm-gold transition">
+                        Connect
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Illustration: Abstract Data/Finance -->
+            <div class="relative hidden md:block animate-float">
+                <!-- Decorative Card Component -->
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl border-l-4 border-jpm-gold max-w-md ml-auto relative">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">Current Status</div>
+                        <div class="text-green-500 text-xs font-bold flex items-center gap-1">
+                            <i class="fas fa-arrow-up"></i> Optimized
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold mb-2">User Experience</h3>
+                    <div class="h-24 flex items-end gap-2 mb-4">
+                        <div class="w-1/6 bg-blue-100 dark:bg-blue-900/40 h-1/3 rounded-t"></div>
+                        <div class="w-1/6 bg-blue-200 dark:bg-blue-800/40 h-1/2 rounded-t"></div>
+                        <div class="w-1/6 bg-blue-300 dark:bg-blue-700/40 h-2/3 rounded-t"></div>
+                        <div class="w-1/6 bg-blue-400 dark:bg-blue-600/40 h-3/4 rounded-t"></div>
+                        <div class="w-1/6 bg-jpm-blue dark:bg-jpm-gold h-full rounded-t relative group">
+                            <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition">
+                                Impact
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500 border-t pt-3 dark:border-gray-700">
+                        <p>Metric: 30% reduction in onboarding time via content strategy.</p>
+                    </div>
+                </div>
+                
+                <!-- Floating Elements -->
+                <div class="absolute -bottom-10 -left-10 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-xl border border-gray-100 dark:border-gray-700 flex items-center gap-3 animate-float" style="animation-delay: 1s;">
+                    <div class="bg-green-100 p-2 rounded-full text-green-600">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold">Content Audit</div>
+                        <div class="text-xs text-gray-500">Completed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Skills Ticker -->
+    <div class="bg-jpm-blue dark:bg-jpm-gold py-3 overflow-hidden border-y border-white/10">
+        <div class="ticker-wrap">
+            <div class="ticker-content text-white dark:text-black font-bold uppercase text-sm tracking-wider">
+                <span class="mx-8">UX Writing</span> •
+                <span class="mx-8">Content Strategy</span> •
+                <span class="mx-8">Technical Documentation</span> •
+                <span class="mx-8">Information Architecture</span> •
+                <span class="mx-8">Style Guides</span> •
+                <span class="mx-8">Agile/Scrum</span> •
+                <span class="mx-8">HTML/XML</span> •
+                <span class="mx-8">MadCap Flare</span> •
+                <span class="mx-8">Adobe Dreamweaver</span> •
+                <span class="mx-8">UX Writing</span> •
+                <span class="mx-8">Content Strategy</span> •
+                <span class="mx-8">Technical Documentation</span> •
+                <span class="mx-8">Information Architecture</span> •
+                <span class="mx-8">Style Guides</span> •
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-white dark:bg-darkbg relative">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-12 gap-12 items-start">
+                <div class="md:col-span-4 reveal">
+                    <h2 class="text-4xl font-serif font-bold mb-6 text-slate-900 dark:text-white">
+                        About <span class="text-jpm-blue dark:text-jpm-gold">Ankita</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-jpm-gold mb-6"></div>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                        Based in Kolkata, West Bengal.
+                    </p>
+                    <div class="bg-slate-50 dark:bg-gray-800 p-6 rounded-lg border-l-4 border-jpm-blue dark:border-jpm-gold">
+                        <h4 class="font-bold mb-2">Education</h4>
+                        <ul class="text-sm space-y-2 text-slate-600 dark:text-slate-400">
+                            <li><strong class="text-slate-900 dark:text-slate-200">M.A. Comparative Literature</strong><br>University of Delhi (2018–2020)</li>
+                            <li><strong class="text-slate-900 dark:text-slate-200">B.A. (Hons) English Literature</strong><br>Himalayan University (2014–2017)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="md:col-span-8 text-lg text-slate-700 dark:text-slate-300 leading-loose reveal">
+                    <p class="mb-6 first-letter:text-5xl first-letter:font-serif first-letter:text-jpm-blue dark:first-letter:text-jpm-gold first-letter:mr-2 float-left">
+                        Experienced and detail-oriented Technical Content Designer with 5 years of expertise in content strategy, UX writing, and technical communication across digital platforms.
+                    </p>
+                    <p class="mb-6">
+                        I specialize in simplifying complex technical concepts through inclusive, user-centred content architecture. My background allows me to lead end-to-end content design initiatives, facilitate discovery workshops, and collaborate cross-functionally to deliver intuitive and consistent user experiences.
+                    </p>
+                    <p>
+                        Currently, I champion inclusive language and narrative cohesion across digital ecosystems, ensuring that every word serves a functional purpose in the user journey.
+                    </p>
+                    
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-jpm-blue dark:text-jpm-gold mb-1">5+</div>
+                            <div class="text-xs uppercase tracking-wide opacity-70">Years Exp.</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-jpm-blue dark:text-jpm-gold mb-1">30%</div>
+                            <div class="text-xs uppercase tracking-wide opacity-70">Faster Onboarding</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-jpm-blue dark:text-jpm-gold mb-1">40%</div>
+                            <div class="text-xs uppercase tracking-wide opacity-70">Higher Engagement</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-jpm-blue dark:text-jpm-gold mb-1">100%</div>
+                            <div class="text-xs uppercase tracking-wide opacity-70">QA Compliance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section (Interactive Tabs) -->
+    <section id="experience" class="py-24 bg-slate-50 dark:bg-[#0f1525]">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 dark:text-white">Professional History</h2>
+                <div class="w-16 h-1 bg-jpm-gold mx-auto mt-4"></div>
+                <p class="mt-4 text-slate-500">A timeline of impact and leadership.</p>
+            </div>
+
+            <!-- Desktop Tabs -->
+            <div class="flex flex-col md:flex-row gap-8 reveal">
+                <!-- Tab List -->
+                <div class="md:w-1/3 flex flex-col space-y-2">
+                    <button onclick="openTab(event, 'persistent')" class="tab-btn active text-left px-6 py-4 rounded-lg bg-white dark:bg-gray-800 shadow-sm border-l-4 border-jpm-blue dark:border-jpm-gold transition-all hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <span class="text-xs font-bold text-gray-400 block mb-1">Oct 2024 – Present</span>
+                        <span class="text-lg font-bold text-slate-800 dark:text-white">Persistent Systems</span>
+                        <span class="text-sm text-jpm-blue dark:text-blue-300 block">Lead Technical Writer</span>
+                    </button>
+                    
+                    <button onclick="openTab(event, 'hitech')" class="tab-btn text-left px-6 py-4 rounded-lg bg-white dark:bg-gray-800 shadow-sm border-l-4 border-transparent transition-all hover:bg-gray-50 dark:hover:bg-gray-700 opacity-60 hover:opacity-100">
+                        <span class="text-xs font-bold text-gray-400 block mb-1">Jan 2024 – Sep 2024</span>
+                        <span class="text-lg font-bold text-slate-800 dark:text-white">Hi-tech Digital Solutions</span>
+                        <span class="text-sm text-jpm-blue dark:text-blue-300 block">Sr. Technical Content Writer</span>
+                    </button>
+
+                    <button onclick="openTab(event, 'optum')" class="tab-btn text-left px-6 py-4 rounded-lg bg-white dark:bg-gray-800 shadow-sm border-l-4 border-transparent transition-all hover:bg-gray-50 dark:hover:bg-gray-700 opacity-60 hover:opacity-100">
+                        <span class="text-xs font-bold text-gray-400 block mb-1">Sep 2021 – Sep 2023</span>
+                        <span class="text-lg font-bold text-slate-800 dark:text-white">Optum (UHG)</span>
+                        <span class="text-sm text-jpm-blue dark:text-blue-300 block">Documentation Writer</span>
+                    </button>
+
+                    <button onclick="openTab(event, 'genpact')" class="tab-btn text-left px-6 py-4 rounded-lg bg-white dark:bg-gray-800 shadow-sm border-l-4 border-transparent transition-all hover:bg-gray-50 dark:hover:bg-gray-700 opacity-60 hover:opacity-100">
+                        <span class="text-xs font-bold text-gray-400 block mb-1">Dec 2020 – Aug 2021</span>
+                        <span class="text-lg font-bold text-slate-800 dark:text-white">Genpact</span>
+                        <span class="text-sm text-jpm-blue dark:text-blue-300 block">Content Curator</span>
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="md:w-2/3 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 min-h-[400px]">
+                    
+                    <!-- Persistent Systems -->
+                    <div id="persistent" class="tab-content block animate-fade-up">
+                        <div class="flex items-baseline justify-between mb-6">
+                            <h3 class="text-2xl font-bold text-slate-800 dark:text-white">Lead Technical Writer</h3>
+                            <span class="text-jpm-gold font-bold">2024 - Present</span>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-chart-line mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Pivotal role in aligning content strategy with product design and business objectives using data-driven recommendations.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-shield-alt mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Executed content design strategies for IAM platforms (SSO, hybrid cloud), ensuring clarity in complex security contexts.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-sitemap mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Restructured legacy documentation architecture, significantly improving user navigation and engagement.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Hi-Tech -->
+                    <div id="hitech" class="tab-content hidden animate-fade-up">
+                        <div class="flex items-baseline justify-between mb-6">
+                            <h3 class="text-2xl font-bold text-slate-800 dark:text-white">Senior Technical Content Writer</h3>
+                            <span class="text-jpm-gold font-bold">2024</span>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-check mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Designed information architecture for SOPs, training guides, and FAQs for global nonprofit clients.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-globe mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Ensured consistent voice and compliance language across documentation spanning U.S. and Asia-based operations.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-cogs mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Translated end-to-end print production workflows into structured content aligned with UX goals.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Optum -->
+                    <div id="optum" class="tab-content hidden animate-fade-up">
+                        <div class="flex items-baseline justify-between mb-6">
+                            <h3 class="text-2xl font-bold text-slate-800 dark:text-white">Documentation Writer</h3>
+                            <span class="text-jpm-gold font-bold">2021 - 2023</span>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-file-alt mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Maintained comprehensive end-user technical content, including release notes and online help.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-search mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Facilitated documentation quality audits and rewrites, ensuring alignment with evolving brand standards.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-pen-fancy mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Acted as subject matter expert on department style and formatting.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Genpact -->
+                    <div id="genpact" class="tab-content hidden animate-fade-up">
+                        <div class="flex items-baseline justify-between mb-6">
+                            <h3 class="text-2xl font-bold text-slate-800 dark:text-white">Content Curator</h3>
+                            <span class="text-jpm-gold font-bold">2020 - 2021</span>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-chalkboard-teacher mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Created frameworks for content and trained newly hired writers.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-chart-bar mt-1.5 mr-3 text-jpm-blue dark:text-jpm-gold"></i>
+                                <span class="text-slate-600 dark:text-slate-300">Tracked documentation effectiveness and evaluated analytics for ongoing development.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Analysis Section -->
+    <section id="skills" class="py-24 bg-white dark:bg-darkbg">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h2 class="text-3xl font-serif font-bold text-slate-900 dark:text-white mb-6">Core Competencies</h2>
+                    <p class="text-slate-600 dark:text-slate-300 mb-8">
+                        My skill set is a diversified portfolio of technical aptitude and creative strategy, ensuring high ROI on user engagement.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <!-- Skill Bar -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-slate-700 dark:text-slate-200">Content Strategy & Architecture</span>
+                                <span class="text-jpm-blue dark:text-jpm-gold">Expert</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-jpm-blue dark:bg-jpm-gold h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-slate-700 dark:text-slate-200">UX Writing & Style Guides</span>
+                                <span class="text-jpm-blue dark:text-jpm-gold">Advanced</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-jpm-blue dark:bg-jpm-gold h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-slate-700 dark:text-slate-200">Technical Writing (SDLC/DDLC)</span>
+                                <span class="text-jpm-blue dark:text-jpm-gold">Advanced</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-jpm-blue dark:bg-jpm-gold h-2 rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-slate-700 dark:text-slate-200">Tools (MadCap, Visio, Dreamweaver)</span>
+                                <span class="text-jpm-blue dark:text-jpm-gold">Proficient</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-jpm-blue dark:bg-jpm-gold h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools Grid -->
+                <div class="grid grid-cols-2 gap-4 reveal">
+                    <div class="p-6 bg-slate-50 dark:bg-[#151b2d] rounded-lg border border-transparent hover:border-jpm-gold transition group">
+                        <i class="fab fa-html5 text-4xl text-orange-500 mb-4 group-hover:scale-110 transition"></i>
+                        <h4 class="font-bold text-slate-800 dark:text-white">HTML & XML</h4>
+                        <p class="text-xs text-slate-500 mt-2">Structural coding for documentation</p>
+                    </div>
+                    <div class="p-6 bg-slate-50 dark:bg-[#151b2d] rounded-lg border border-transparent hover:border-jpm-gold transition group">
+                        <i class="fas fa-project-diagram text-4xl text-blue-500 mb-4 group-hover:scale-110 transition"></i>
+                        <h4 class="font-bold text-slate-800 dark:text-white">MS Visio</h4>
+                        <p class="text-xs text-slate-500 mt-2">Workflow visualization</p>
+                    </div>
+                    <div class="p-6 bg-slate-50 dark:bg-[#151b2d] rounded-lg border border-transparent hover:border-jpm-gold transition group">
+                        <i class="fas fa-book text-4xl text-green-500 mb-4 group-hover:scale-110 transition"></i>
+                        <h4 class="font-bold text-slate-800 dark:text-white">MadCap Flare</h4>
+                        <p class="text-xs text-slate-500 mt-2">Single-source publishing</p>
+                    </div>
+                    <div class="p-6 bg-slate-50 dark:bg-[#151b2d] rounded-lg border border-transparent hover:border-jpm-gold transition group">
+                        <i class="fas fa-users text-4xl text-purple-500 mb-4 group-hover:scale-110 transition"></i>
+                        <h4 class="font-bold text-slate-800 dark:text-white">Agile/Rally</h4>
+                        <p class="text-xs text-slate-500 mt-2">Collaborative project management</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section id="contact" class="py-24 bg-jpm-blue dark:bg-[#050912] text-white relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10 reveal">
+            <h2 class="text-4xl font-serif font-bold mb-6">Ready to Optimize Your Content Strategy?</h2>
+            <p class="text-blue-100 mb-10 max-w-2xl mx-auto">
+                Let's collaborate to transform complex technical requirements into seamless user experiences.
+            </p>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+                <a href="mailto:ankitah031194@gmail.com" class="inline-flex items-center justify-center px-8 py-4 bg-white text-jpm-blue font-bold rounded-lg hover:bg-gray-100 transition shadow-lg">
+                    <i class="fas fa-envelope mr-2"></i> Send an Email
+                </a>
+                <a href="https://linkedin.com/in/ahalder1994/" target="_blank" class="inline-flex items-center justify-center px-8 py-4 border border-white text-white font-bold rounded-lg hover:bg-white hover:text-jpm-blue transition">
+                    <i class="fab fa-linkedin-in mr-2"></i> LinkedIn Profile
+                </a>
+            </div>
+
+            <div class="mt-16 pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center text-sm text-blue-200">
+                <p>&copy; 2025 Ankita Halder. All Rights Reserved.</p>
+                <div class="mt-4 md:mt-0">
+                    <span class="mr-4"><i class="fas fa-phone-alt mr-1"></i> +91 7278418845</span>
+                    <span><i class="fas fa-map-marker-alt mr-1"></i> Kolkata, India</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- Intro Loader ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+            }, 2500); // 2.5s duration for intro
+        });
+
+        // --- Dark Mode Toggle ---
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+            } else {
+                localStorage.theme = 'light';
+            }
+        });
+
+        // --- Scroll Progress Bar ---
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("scrollProgress").style.width = scrolled + "%";
+            
+            // Scroll Reveal Animation
+            reveal();
+        };
+
+        // --- Scroll Reveal Logic ---
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        // --- Tabs Logic ---
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            // Hide all tab content
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.add("hidden");
+                tabcontent[i].classList.remove("block");
+            }
+            
+            // Remove active style from all tab buttons
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("border-jpm-blue", "dark:border-jpm-gold", "bg-gray-50", "opacity-100");
+                tablinks[i].classList.add("border-transparent", "opacity-60");
+            }
+            
+            // Show current tab and add active style
+            document.getElementById(tabName).classList.remove("hidden");
+            document.getElementById(tabName).classList.add("block");
+            evt.currentTarget.classList.remove("border-transparent", "opacity-60");
+            evt.currentTarget.classList.add("border-jpm-blue", "dark:border-jpm-gold", "opacity-100");
+        }
+
+        // --- Mobile Menu ---
+        const btn = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Trigger reveal on load
+        reveal();
+    </script>
+</body>
+</html>
