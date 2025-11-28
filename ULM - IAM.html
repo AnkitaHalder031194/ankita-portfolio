@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Lifecycle Management - Admin Console</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #004d99;
+            border-bottom: 3px solid #004d99;
+            padding-bottom: 10px;
+            margin-top: 0;
+            text-align: center; /* Center Header */
+        }
+        h2 {
+            color: #007bff;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #495057;
+            margin-top: 20px;
+        }
+        .toc {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .toc h2 {
+            border-bottom: none;
+            margin-top: 0;
+        }
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .toc li {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 5px;
+            border-bottom: 1px dotted #ccc;
+        }
+        .toc a {
+            color: #004d99;
+            text-decoration: none;
+            flex-grow: 1;
+        }
+        .page-num {
+            font-weight: bold;
+            color: #004d99;
+            padding-left: 10px;
+            text-align: right; /* Right align page number */
+        }
+
+        /* Image Styling */
+        .document-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 25px auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Persona Box Styling */
+        .persona-box {
+            border-left: 5px solid #007bff;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            background-color: #e9f7ff;
+            border-radius: 4px;
+        }
+
+        /* Step List Styling */
+        .step-list {
+            list-style: decimal;
+            padding-left: 20px;
+        }
+        .step-list li {
+            margin-bottom: 10px;
+        }
+        .note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>User Lifecycle Management - Admin Console</h1>
+        
+
+
+        <div class="toc">
+            <h2>Contents</h2>
+            <ul>
+                <li><a href="#what-is-ulm">What is User Lifecycle Management?</a><span class="page-num">1</span></li>
+                <li><a href="#overview">Overview of Efficient User Management</a><span class="page-num">2</span></li>
+                <li><a href="#stages">User Lifecycle Stages</a><span class="page-num">3</span></li>
+                <li><a href="#registration">User Registration</a><span class="page-num">3</span></li>
+                <li><a href="#access-granting">Access Granting and Role Assignment.</a><span class="page-num">8</span></li>
+                <li><a href="#role-inheritance">Role Inheritance and Access Policies</a><span class="page-num">17</span></li>
+                <li><a href="#compliance-policies">Compliance and Access Policies</a><span class="page-num">19</span></li>
+                <li><a href="#revocation-governance">Access Revocation and Governance.</a><span class="page-num">23</span></li>
+                <li><a href="#governance-policies">Governance Policies.</a><span class="page-num">25</span></li>
+                <li><a href="#user-access-management">User Access Management</a><span class="page-num">26</span></li>
+                <li><a href="#use-cases">Use Cases</a><span class="page-num">28</span></li>
+            </ul>
+        </div>
+
+        <section id="what-is-ulm">
+            <h2>What is User Lifecycle Management?</h2>
+            <p>User lifecycle management is a comprehensive process that involves managing a user's identity and access throughout their association with an organization.</p>
+            <p>The User Lifecycle Management process outlines the steps involved in user registration, access provisioning, access deprovisioning, and governance. It serves as a reference for admins, super admins and other business personas to efficiently manage user roles and permissions.</p>
+
+            <h3>User Lifecycle Management Personas</h3>
+            <p>User Lifecycle Management is managed by different user personas, each with specific permissions:</p>
+
+            <div class="persona-box">
+                <h4>Organization owner</h4>
+                <p>Organization owners are responsible for managing organizational-level configurations. Whichever application is a part of that organization, will have those groups also applied to it. Organization owners are on a higher level than Applications Owner. Organization owners can create organization level groups, add or remove applications from the organizations which App Owners or App admins are unable to do. Organization Owners have full access to all applications and users. They have the ability to create, modify, and remove users and roles. Organization owners can manage policies and governance.</p>
+            </div>
+
+            <div class="persona-box">
+                <h4>Application Owner</h4>
+                <p>An application owner is responsible for a specific application. They can manage users and access within that application. They are assigned by an application admin and can also assign others as application owners. Application owners can create groups, assign users, and define roles. However, they cannot view other applications.</p>
+            </div>
+
+            <div class="persona-box">
+                <h4>Group Owner</h4>
+                <p>A group owner has restricted access within the application system. They can manage user access within a specific group but cannot change all configurations. Group owners can manage users within their assigned group or division, but they cannot access users outside their division.</p>
+            </div>
+
+            <div class="persona-box">
+                <h4>User Administrator</h4>
+                <p>A user administrator manages user-related operations, such as user registration, adding or removing users, assigning roles, and handling security concerns like deactivating compromised accounts, ensures users have the correct permissions based on governance policies. They can search for users via email or username and manage their access within the system.</p>
+            </div>
+        </section>
+
+        <section id="overview">
+            <h2>Overview of Efficient User Management</h2>
+            <p>This feature in the Admin Console will enable you to invite new users to join your team. You can explore the features that enable you to view assigned role and permissions to the process of managing user identities, roles, and access rights throughout their engagement with the organization's system. It will ensure secure, role-based access while maintaining compliance with policies.</p>
+        </section>
+
+        <section id="stages">
+            <h2>User Lifecycle Stages</h2>
+            <p style="font-style: italic;">The diagram illustrates the flow between the four stages:</p>
+            <div style="text-align: center">
+				<img src="https://www.dropbox.com/scl/fi/cfzzf0xcsqnmvke55e6st/0.png?rlkey=3ng9ce7ksi6v0q4z72ke196q6&st=kkydv56n&raw=1" alt="phases">
+			</div>
+            
+
+
+
+
+            <p>The lifecycle of a user consists of the following stages:</p>
+            <ol class="step-list">
+                <li>User Registration</li>
+                <li>Access Granting and Role Assignment</li>
+                <li>Compliance and Access Policies</li>
+                <li>Access Revocation and Governance</li>
+            </ol>
+        </section>
+
+        <section id="registration">
+            <h2>User Registration</h2>
+            <p>This tab is used for onboarding new users. User invitation is the process by which an individual creates an account within an application or system. This typically involves providing personal information, such as an email address and password, and completing any required verification steps. Once registered, the user gains access to the application's features and functionalities (only when the user is invited through the permission Assign access to this invitation).</p>
+
+              <div style="text-align: center">
+				<img src="https://www.dropbox.com/scl/fi/l9sog1iki1g78e14yiib9/9.jpg?rlkey=qwnpd5gj64nx1mgvigrlehc8w&st=3eiqcu5p&raw=1" width="800" height="300" alt="onboarding">
+			</div>
+            
+
+            <h3>Steps to Invite a User and thereafter Registering the User</h3>
+            <ol class="step-list">
+                <li>Locate and click <strong>Invite User</strong> within the application.</li>
+                <li>Enter the user's first and last name, email address, and username. (Example: email address: ssmith@guerrillamail.com, name: Steve Smith, username: Ssmith)</li>
+                <li>Select the existing application from the dropdown to grant access to the invited user.</li>
+                <li>Choose the Application Redirect URL from the dropdown.</li>
+                <li>Click <strong>Assign access</strong> to this invitation.
+
+                   
+                    
+                </li>
+
+                <li>Steps to follow in the Associate Application Group:
+                    <ol type="a">
+                        <li>Click Associate Application Group.</li>
+                        <li>Search the group name, and click Add. (Only one group can be associated with an invitation.)</li>
+                        <li>Click Confirm Assignment.</li>
+                    </ol>
+                    <p style="font-style: italic; margin-top: 10px;">Pop-up: Associate Application Group</p>
+                    
+                </li>
+
+                <li>Create Group User Attribute:
+                    <div class="note">
+                        <p style="font-weight: bold; margin-top: 0;">Notes:</p>
+                        <ul>
+                            <li>Attribute Name is a user-defined identifier (key) for additional metadata attached to a user's access profile. (Example: Attribute Name: Role, Attribute Value: Healthcare Admin OR Attribute Name: Persona, Attribute Value: Super Administrator)</li>
+                            <li>Attribute Value is the specific data assigned to the attribute name, used for policy enforcement or decision-making.</li>
+                        </ul>
+                    </div>
+                    <ol type="a" start="4">
+                        <li>Create Group User Attribute</li>
+                        <li>Fill attribute name (Required)</li>
+                        <li>Fill attribute value (Required)</li>
+                        <li>Click Create.</li>
+                    </ol>
+                    <p style="font-style: italic; margin-top: 10px;">Pop-up: Create Group User Attribute</p>
+                    
+                </li>
+
+                <li>Click the Invite button. The user will receive an email with a hyperlink to register.</li>
+                <li>The invited user (e.g., Steve Smith) will receive an email containing a hyperlink to log in or sign in with their XXXX Gov ID.</li>
+                <li>Users can self-register via a portal or through the invitation received.
+                    <ol type="a">
+                        <li>The user clicks on the hyperlink and follows the registration flow to complete their registration.</li>
+                        <li>Upon registration, users receive an email confirmation and authentication link.</li>
+                    </ol>
+                    <p style="font-style: italic; margin-top: 10px;">Screenshot: Invitation Email Example</p>
+                    
+                </li>
+                <li>Once registered, the user will appear in the Registered Users type under the User section.
+                    <p style="font-style: italic; margin-top: 10px;">Screenshot: User Search Result</p>
+                    
+                </li>
+            </ol>
+        </section>
+
+        <section id="access-granting">
+            <h2>Access Granting and Role Assignment</h2>
+            <p>Role Assignment is the process of linking predefined roles (bundles of permissions) to users or groups. Roles define:</p>
+            <ul>
+                <li>What a user can access (e.g., applications, data).</li>
+                <li>How they can interact (e.g., view, edit, approve).</li>
+            </ul>
+
+            <p>The two types of Role Assignment are:</p>
+            <ul>
+                <li>User based role assignment</li>
+                <li>Group based role assignment</li>
+            </ul>
+
+            <h3>User based Role Assignment</h3>
+            <p>This step involves assigning the attribute necessary permissions to users. Users are assigned to roles and groups based on their department or application.</p>
+
+            <h4>Steps</h4>
+            <ol class="step-list">
+                <li>Navigate to the Users section.</li>
+                <li>Select Registered Users in User Type.</li>
+                <li>Select Email Address / Username / UUID from the Search dropdown.</li>
+                <li>Type Email Address / Username / UUID of the user as per the selection. (Example: ssmith@guerrillamail.com /Ssmith/0c474546-0b8d-406f-9734-c122bbea03f1)</li>
+                <li>Click Search.</li>
+                <li>Click on the name of the user.</li>
+                <li>Select the Access tab and click Assign Roles.
+                    <p style="font-style: italic; margin-top: 10px;">Screenshot: User Profile View with Access Tab</p>
+                    
+                </li>
+                <li>Select an application from the dropdown.</li>
+                <li>Select application group from the dropdown.</li>
+                <li>Click <strong>Add</strong> > <strong>Confirm Assignment</strong>.
+                    <p style="font-style: italic; margin-top: 10px;">Pop-up: Assign Roles</p>
+                    
+                </li>
+                <li>Users will successfully be assigned with roles.</li>
+            </ol>
+
+            <h3>Group Based Role Assignment</h3>
+            <p>Group-based Role Assignment automatically grants access permissions to users by assigning them to predefined groups (e.g., departments, teams, or divisions). Roles are attached at the group level instead of individually.</p>
+
+            <h4>Steps</h4>
+            <ol class="step-list">
+                <li>Go to the Access section within the application to view the user's current access.</li>
+                <li>If no access is displayed, select the application for which you want to view or assign roles. (Example: Type and select JK Healthcare to view roles for that application.)</li>
+                <li>The system will display the roles and groups assigned to the user for the selected application. (Example: The user might be an admin for "JK Healthcare".)</li>
+                <li>To assign new roles, click on Assign Roles, select the application, choose the appropriate group (Group-based access ensures users inherit permissions automatically), and click Add to assign.</li>
+                <li>Verify Role Assignment by searching for the user; the assigned role will be visible in the user's profile.</li>
+            </ol>
+            
+            <h3>Advanced Search and Bulk Operations</h3>
+            <ul>
+                <li>Advanced Search Option: If you don't have the user's email address, username, or OHID, use the advanced search option. Search using the first name and last name. (Example: If user’s name is Steve Smith, then enter the first name Steve and last name Smith to find the user.)</li>
+                <li>Bulk Import for Access Granting: Use the Import User functionality. Prepare an Excel file with user details in the predefined format (Example: OHID, username, and roles). Upload the file to import users and assign access. New users will receive an email invitation; existing users will have access assigned directly.</li>
+            </ul>
+
+            <h3>Fast-Track Registration vs. Direct Self-Registration</h3>
+            <p>Fast-Track User Registration with Access: Ensures users are productive immediately after registration by granting access during the onboarding process. An admin invites a user, optionally assigning access (roles/groups) upfront. Upon clicking the link, the user registers and is automatically granted pre-assigned access and redirected to the application. No separate access-grant step is needed.</p>
+            <p>Direct Self-Registration Process: Allows users to register independently (e.g., via a portal), but requires manual access assignment afterward by an admin via the Admin Console. No access is granted automatically upon signup.</p>
+
+            <p style="font-weight: bold; margin-top: 15px;">Table: Comparison of Registration Methods</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Initiated By</th>
+                        <th>Access Assignment</th>
+                        <th>User Steps</th>
+                        <th>Bulk Support</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Direct Self-Registration</td>
+                        <td>User</td>
+                        <td>Manual (Post-Registration)</td>
+                        <td>Register, then Admin assigns access</td>
+                        <td>No</td>
+                        <td>Public portals/Low-risk apps</td>
+                    </tr>
+                    <tr>
+                        <td>Invitation Based Registration</td>
+                        <td>Admin</td>
+                        <td>Manual (Post-Registration)</td>
+                        <td>Receive email, register, then Admin assigns access</td>
+                        <td>No</td>
+                        <td>Standard onboarding</td>
+                    </tr>
+                    <tr>
+                        <td>Bulk User Import + Access Assignment</td>
+                        <td>Admin</td>
+                        <td>Bulk (Pre-Registration)</td>
+                        <td>Receive email, register, access is ready</td>
+                        <td>Yes</td>
+                        <td>Large-scale hires (e.g., 10K users)</td>
+                    </tr>
+                    <tr>
+                        <td>Fast-Track Registration</td>
+                        <td>Admin</td>
+                        <td>Auto (Pre-Registration)</td>
+                        <td>Register via link, access instantly granted</td>
+                        <td>No</td>
+                        <td>Critical roles (e.g., healthcare providers)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="role-inheritance">
+            <h2>Role Inheritance and Access Policies</h2>
+            <h3>Role Inheritance</h3>
+            <p>Role Inheritance refers to the automatic assignment of roles (and their associated permissions) to users based on their membership in specific groups or divisions. This eliminates manual assignments and ensures consistent access control across teams.</p>
+            <p>Example: If a user is added to the "Pharmacy" group, they inherit the "Pharmacy Manager" role automatically, along with permissions like "View Patient Records" or "Process Orders." If a user is removed from the group, the role (and permissions) is automatically revoked.</p>
+
+            <h3>Access Policies</h3>
+            <p>Access Policies are rules that govern how roles and permissions are assigned, enforced, and managed. These policies define:</p>
+            <ol class="step-list">
+                <li>Inheritance Rules: Whether roles are auto assigned via group membership (for new applications) or manually assigned (for legacy systems).</li>
+                <li>Conditions: Criteria for granting/revoking access (e.g., job function, location).</li>
+                <li>Compliance: Requirements like periodic access reviews or separation of duties.</li>
+                <li>Custom Attributes: Metadata (e.g., "Department=Cardiology") used to refine access decisions.</li>
+            </ol>
+            <p>In essence, role inheritance streamlines access management, while access policies enforce security, compliance, and operational efficiency.</p>
+        </section>
+
+        <section id="compliance-policies">
+            <h2>Compliance and Access Policies</h2>
+            <h3>Access Governance Framework</h3>
+            <p>The Access Governance Framework in the Admin Console IGA solution is designed to enforce secure, scalable, and self-service access management across applications and user roles.</p>
+            
+            <h4>Core Components of the Framework</h4>
+            <ul>
+                <li>Persona-Based Access Control: Supports five key personas: Super Admin, Application Admin, Group Owner, User Admin, and Org Owner, each with defined privileges.</li>
+                <li>Role & Permission Modeling: Roles (e.g., "Pharmacy Manager") are created with attached permissions (actions like "view" or "edit").</li>
+                <li>Group-Based Access: Users inherit roles via group membership (e.g., "Pharmacy" group members auto get "Pharmacy_Admin" role). Supports auto-inheritance (new apps) or manual assignment (legacy apps).</li>
+                <li>Custom Attributes: Additional metadata (e.g., "Department=Cardiology") can be assigned to users/groups for fine-grained policy enforcement.</li>
+            </ul>
+
+            <h4>Governance Mechanisms</h4>
+            <p>Mechanisms include Self-Service Access Assignment, Auto Revocation, Bulk Import/Export, and Application Lifecycle Control.</p>
+
+            <h3>Policy-Based Role Management</h3>
+            <p>Objective: Streamline role assignments using structured policies, adhering to governance principles like Least Privilege and Separation of Duties.</p>
+            <ol class="step-list">
+                <li>Role Creation: Navigate to Applications > Roles in Identity Console to define roles and descriptions.</li>
+                <li>Permission Assignment: Under each role, attach predefined permissions (e.g., "Manage Users").</li>
+                <li>Role-to-Group Mapping: Assign roles to groups (e.g., "Pharmacy" group gets "Pharmacy Manager" role).</li>
+            </ol>
+
+            <h3>Audit and Reporting Features</h3>
+            <p>Objectives: Provides visibility into user access and enables compliance audits. Includes:</p>
+            <ul>
+                <li>Audit Logs: Records user access grants/revocations, role/group modifications, and application lifecycle changes.</li>
+                <li>Reporting: Provides User Access Summary, Group Compliance, and Application Status.</li>
+                <li>Periodic Recertification: Schedule reviews for role assignments and group memberships.</li>
+            </ul>
+
+            <h3>Group-Based Access Control (GBAC)</h3>
+            <p>Objective: Simplify access management through groups. Access is controlled through groups rather than direct assignments, reducing governance complexity.</p>
+            <ol class="step-list">
+                <li>Group Creation: Define groups (e.g., "OPD," "Cardiology") with descriptions and custom attributes.</li>
+                <li>Role Inheritance: Assign roles to groups. Users added to the group inherit roles automatically (if auto-inheritance is enabled).</li>
+                <li>User Assignment: Add users via Bulk Import (CSV) or Manual Entry.</li>
+                <li>Access Revocation: Remove users from groups to revoke inherited roles.</li>
+            </ol>
+        </section>
+
+        <section id="revocation-governance">
+            <h2>Access Revocation and Governance</h2>
+            <p>Access revocation is the process of removing or restricting a user's access to applications, roles and permissions within an organization. Governance ensures that only necessary access is granted when a user leaves or changes roles.</p>
+
+            <h3>Method 1: Group-Based Access Revocation</h3>
+            <p>Group Owner or Super Admin is responsible for this action.</p>
+            <ol class="step-list">
+                <li>Applications > [Select Application] > Access > Groups > [Select Group]. (Example: For the JKAdmin group under JK Healthcare application.)</li>
+                <li>Locate User in the Group: Under the group’s Users tab, search for the target user (e.g., Steve Smith).</li>
+                <li>Revoke Group Membership: Click Remove next to the user’s name. All roles auto inherited via the group are revoked immediately. (Example: Revoking Steve Smith from the JKAdmin group removes his Doctor role.)</li>
+            </ol>
+
+            <h3>Method 2: Manual Role Revocation</h3>
+            <p>Application Owner or Super Admin are responsible for this action, typically for legacy applications with no auto-inheritance.</p>
+            <ol class="step-list">
+                <li>Users > Search User > Select [username]> Access.</li>
+                <li>Search for User and Application: Enter the username (e.g., "Steve Smith") and select the application (e.g., "UHCP Report").</li>
+                <li>Revoke Assigned Roles: Under the Roles section, click Revoke next to the role to remove.</li>
+            </ol>
+        </section>
+
+        <section id="governance-policies">
+            <h2>Governance Policies</h2>
+            <p>Governance policies in the Admin Console’s IGA system are rule-based frameworks that enforce secure, compliant, and standardized access controls across an organization. These policies automate decision-making for access provisioning, revocation, and role assignments while ensuring alignment with regulatory requirements (e.g., HIPAA, SOX).</p>
+
+            <h3>Policy 1: Auto-Inheritance for New Applications</h3>
+            <p>Super Admins, Application owners and Organization owners are responsible to perform this action.</p>
+            <ol class="step-list">
+                <li>Applications > [New Application] > Settings > Group Policy.</li>
+                <li>Toggle Auto-Inheritance to On. Result: Users added to groups automatically inherit roles assigned to those groups.</li>
+            </ol>
+
+            <h3>Policy 2: Custom Attributes for Enhanced Control</h3>
+            <p>Application owners and Organization owners are responsible to perform this action.</p>
+            <ol class="step-list">
+                <li>Applications > [Application] > Custom Attributes Add metadata (e.g., Department=Cardiology, Location=NYC).</li>
+                <li>Apply Attributes to Users/Groups: Use attributes to enforce policies (e.g., restrict access to users with Location=NYC).</li>
+            </ol>
+
+            <h3>Policy 3: Application Lifecycle Management</h3>
+            <p>Super Admin or Application Owner can manage the Application Status.</p>
+            <ol class="step-list">
+                <li>Applications > [Name of the Application] > Status.</li>
+                <li>Set to Inactive to block all authentication requests (e.g., during a security breach).</li>
+            </ol>
+        </section>
+
+        <section id="user-access-management">
+            <h2>User Access Management</h2>
+            <p>User Access Management is the end-to-end process of provisioning, modifying, and revoking user access to applications and resources within the IGA (Identity Governance and Administration) framework. It combines self-service capabilities and role-based controls to ensure secure and efficient access lifecycle management.</p>
+            
+            <h3>Core Components of User Access Management</h3>
+            <ul>
+                <li>Personas & Roles: Includes five key personas (Super Admin, Application Admin, Group Owner, User Admin, Org Owner) and Roles/Permissions that bundle access rights.</li>
+            </ul>
+
+            <p style="font-weight: bold; margin-top: 15px;">Table: Access Assignment Methods</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Process</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Manual Assignment</td>
+                        <td>Admins assign roles to users via UI.</td>
+                        <td>Ad-hoc access needs.</td>
+                    </tr>
+                    <tr>
+                        <td>Bulk Import (CSV)</td>
+                        <td>Upload predefined roles/groups for mass onboarding.</td>
+                        <td>Large-scale hires (e.g., 10K users).</td>
+                    </tr>
+                    <tr>
+                        <td>Fast-Track Registration</td>
+                        <td>Invite users with pre-assigned roles; access granted upon registration.</td>
+                        <td>Critical roles (e.g., healthcare providers).</td>
+                    </tr>
+                    <tr>
+                        <td>Group Inheritance</td>
+                        <td>Users auto-inherit roles when added to a group.</td>
+                        <td>Team/department-based access (e.g., "Finance" group).</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Access Revocation</h3>
+            <ul>
+                <li>Group-Level: Remove user &rarr; All group roles revoked instantly.</li>
+                <li>Role-Level: Selective revocation of individual roles.</li>
+                <li>Bulk Revocation: Revoke all roles for a user/group via CSV.</li>
+            </ul>
+        </section>
+
+        <section id="use-cases">
+            <h2>Use Cases</h2>
+            <p>Practical examples of ULM in action:</p>
+            <ul>
+                <li>Hospital Management System: Doctors, nurses, and billing staff have separate access levels. Only authorized users can enter restricted areas like the operation theater.</li>
+                <li>Enterprise Application Access: Employees are assigned to departments with predefined access. Access is revoked automatically when an employee leaves.</li>
+                <li>Healthcare Provider Onboarding: New providers receive access on day one for immediate productivity.</li>
+            </ul>
+        </section>
+
+    </div>
+
+</body>
+</html>
